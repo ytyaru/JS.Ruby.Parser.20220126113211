@@ -12,9 +12,22 @@ window.addEventListener('load', (event) => {
         }
     }
     const s = new ShortRubyParser();
-    const text = '私（わたし）は漢字（かんじ）をHTML（ハイパー テキスト マークアップ ランゲージ）に変換（変換）します。';
-    const html = s.parse(text)
+    let text = '私（わたし）は漢字（かんじ）をHTML（ハイパー テキスト マークアップ ランゲージ）に変換（へんかん）します。ＨＴＭＬ（Hyper Text Markup Language）。';
+    let html = s.parse(text)
     console.log(text);
     console.log(html);
-    document.body.innerHTML += `${text}<br>${html}`
+    document.body.innerHTML += `${text}<br>${html}<br><br>`
+
+    text = '私(わたし)は漢字(かんじ)をHTML(ハイパー テキスト マークアップ ランゲージ)に変換(へんかん)します。ＨＴＭＬ(Hyper Text Markup Language)。';
+    html = s.parse(text)
+    console.log(text);
+    console.log(html);
+    document.body.innerHTML += `${text}<br>${html}<br><br>`
+
+    text = '私《わたし》は漢字《かんじ》をHTML《ハイパー テキスト マークアップ ランゲージ》に変換《へんかん》します。ＨＴＭＬ《Hyper Text Markup Language》。';
+    html = s.parse(text)
+    console.log(text);
+    console.log(html);
+    document.body.innerHTML += `${text}<br>${html}<br><br>`
+
 });
