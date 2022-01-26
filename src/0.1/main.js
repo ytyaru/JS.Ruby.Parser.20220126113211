@@ -1,5 +1,6 @@
 window.addEventListener('load', (event) => {
-    class ShortRubyParser {
+    /*
+    class ShortRubyParserTest {
         #KANJI = '\\u2e80-\\u2fdf\\u3005\\3007\\303b\\u4e00-\\u9faf\\u3400-\\u4dbf\\uf900-\\ufaff';
         #ALPHABET = 'A-Za-z0-9Ａ-Ｚａ-ｚ０-９';
         #RB_LEN = 20;
@@ -10,8 +11,16 @@ window.addEventListener('load', (event) => {
                 return `<ruby>${rb}<rp>（</rp><rt>${rt}</rt><rp>）</rp></ruby>`;
             });
         }
+        //  /([\u2e80-\u2fdf\u3005\3007\303b\u4e00-\u9faf\u3400-\u4dbf\uf900-\ufaffA-Za-z0-9Ａ-Ｚａ-ｚ０-９]{1,20}?)[(（《]([^\n]{1,50}?)[)）》]/g
+        //   /([^\n]{1,10}?)[\(（《\{｛]([^\n]{1,20}?)[\)）》\}｝]/g
     }
+    const T = new ShortRubyParserTest();
+    console.log(T);
+    */
+
     const s = new ShortRubyParser();
+    console.log(s)
+    console.log(s.RegEx)
     let text = '私（わたし）は漢字（かんじ）をHTML（ハイパー テキスト マークアップ ランゲージ）に変換（へんかん）します。ＨＴＭＬ（Hyper Text Markup Language）。連続した漢字・英数字の前にカッコを置くとルビだと判断される。';
     let html = s.parse(text)
     console.log(text);
@@ -47,6 +56,7 @@ window.addEventListener('load', (event) => {
 
 
 
+    /*
     class LongRubyParser {
         #RB_LEN = 20;
         #RT_LEN = 50;
@@ -57,7 +67,6 @@ window.addEventListener('load', (event) => {
             });
         }
     }
-    /*
     */
 
     let p = new LongRubyParser();
