@@ -106,16 +106,18 @@ window.addEventListener('load', (event) => {
     console.log(html);
     document.body.innerHTML += `${text}<br>${html}<br><br>`
 
-    text = 'ルビにせずカッコを使いたいときもあるよね。たとえば心の中で考えていることをカッコ内で表現するとか。｜漢字（こんなふうに）。';
+    text = 'メタ文字のエスケープはできない。小説投稿サイトだとカッコの直前で｜を入力すればメタ文字自体を出力できる。けれどその処理を実装するのが面倒だったし、ユーザにとってもムダに複雑化してしまう。実行処理速度もさがる。なのでメタ文字は出力できない仕様にしてしまうことにした。その代わりメタ文字は選べる。独自形式として｛｝を採用することにした。さらにこの独自形式から各投稿サイトの形式に変換できるようにすれば実質何の問題もない。';
     html = p.parse(text)
     console.log(text);
     console.log(html);
     document.body.innerHTML += `${text}<br>${html}<br><br>`
 
-
-
-
-
+    const ns = new NovelShortRubyParser() 
+    text = '私｛わたし｝は漢字｛かんじ｝をHTML｛ハイパー テキスト マークアップ ランゲージ｝に変換｛へんかん｝します。ＨＴＭＬ｛Hyper Text Markup Language｝。';
+    html = ns.parse(text)
+    console.log(text);
+    console.log(html);
+    document.body.innerHTML += `${text}<br>${html}<br><br>`
 
 
 });
