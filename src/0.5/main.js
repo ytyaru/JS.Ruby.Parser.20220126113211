@@ -39,13 +39,21 @@ window.addEventListener('load', (event) => {
     novel = parser.parse(text)
     html = nh.parse(novel)
     document.body.innerHTML += `<p>${text}</p><p>${novel}</p><p>${html}</p><hr>`
+    // 青空文庫→HTML
+    let aoh = new Parser(RubyParseSetFactory.AozoraHtml);
+    html = aoh.parse(text);
+    document.body.innerHTML += `<p>${text}</p><p>${html}</p><hr>`
 
     // カクヨム→｜《》
     parser = new Parser(RubyParseSetFactory.KakuyomuNovel);
-    text = 'カクヨム《かくよむ》の書式。｜KAKU-YOMU《カクヨム》。'
+    text = 'カクヨム《かくよむ》の書式。青空文庫と同じ。｜KAKU-YOMU《カクヨム》。書読《かくよむ》。｜カクヨム（かくよむ）。'
     novel = parser.parse(text)
     html = nh.parse(novel)
     document.body.innerHTML += `<p>${text}</p><p>${novel}</p><p>${html}</p><hr>`
+    // カクヨム→HTML
+    let kh = new Parser(RubyParseSetFactory.KakuyomuHtml);
+    html = kh.parse(text);
+    document.body.innerHTML += `<p>${text}</p><p>${html}</p><hr>`
 
     // 小説家になろう→｜《》
     parser = new Parser([RubyParseSetFactory.NarouNovel]);
@@ -53,6 +61,11 @@ window.addEventListener('load', (event) => {
     novel = parser.parse(text)
     html = nh.parse(novel)
     document.body.innerHTML += `<p>${text}</p><p>${novel}</p><p>${html}</p><hr>`
+    // 小説家になろう→HTML
+    console.log(RubyParseSetFactory.NarouHtml)
+    let nah = new Parser([RubyParseSetFactory.NarouHtml]);
+    html = nah.parse(text);
+    document.body.innerHTML += `<p>${text}</p><p>${html}</p><hr>`
 
     // ハーメルン→｜《》
     parser = new Parser([RubyParseSetFactory.HamelnNovel]);
@@ -60,30 +73,37 @@ window.addEventListener('load', (event) => {
     novel = parser.parse(text)
     html = nh.parse(novel)
     document.body.innerHTML += `<p>${text}</p><p>${novel}</p><p>${html}</p><hr>`
+    // ハーメルン→HTML
+    let hh = new Parser([RubyParseSetFactory.HamelnHtml]);
+    html = nh.parse(text);
+    document.body.innerHTML += `<p>${text}</p><p>${html}</p><hr>`
 
     // アルファポリス→｜《》
     parser = new Parser([RubyParseSetFactory.AlphaPoliceNovel]);
     text = 'アルファポリスの書式。#宇宙__そら__#が光って。'
     novel = parser.parse(text)
     html = nh.parse(novel)
-    document.body.innerHTML += `<p>${text}</p><p>${novel}</p><p>${html}</p>`
-    // ｜《》→アルファポリス
+    document.body.innerHTML += `<p>${text}</p><p>${novel}</p><p>${html}</p><hr>`
+    // ｜《》→アルファポリス→HTML
     parser = new Parser([RubyParseSetFactory.NovelAlphaPolice]);
     text = parser.parse(novel)
-    document.body.innerHTML += `<p>${text}</p><hr>`
+    const ah = new Parser([RubyParseSetFactory.AlphaPoliceHtml]);
+    html = ah.parse(text)
+    document.body.innerHTML += `<p>${text}</p><p>${html}</p><hr>`
 
     // でんでんマークダウン→｜《》
-    parser = new Parser([RubyParseSetFactory.DendenNovel]);
-    let denden = 'でんでんマークダウン書式から小説形式に変換する。{漢字|かんじ}。'
-    novel = parser.parse(denden)
+    let dn = new Parser([RubyParseSetFactory.DendenNovel]);
+    let denden = 'でんでんマークダウン→小説形式→HTMLに変換する。{漢字|かんじ}。{漢字|かん|じ}。'
+    novel = dn.parse(denden)
     html = nh.parse(novel)
     document.body.innerHTML += `<p>${denden}</p><p>${novel}</p><p>${html}</p><hr>`
-
-    // ｜《》→でんでんマークダウン
+    // ｜《》→でんでんマークダウン→HTML
     parser = new Parser([RubyParseSetFactory.NovelDenden]);
-    novel = '小説形式からでんでんマークダウン形式に変換する。｜山田《やまだ》。｜おとぎ話《フェアリーストーリー》。'
+    novel = '小説形式→でんでんマークダウン形式→HTMLに変換する。｜山田《やまだ》。｜おとぎ話《フェアリーストーリー》。'
     denden = parser.parse(novel)
-    document.body.innerHTML += `<p>${novel}</p><p>${denden}</p><hr>`
+    let dh = new Parser([RubyParseSetFactory.DendenHtml]);
+    html = dh.parse(denden)
+    document.body.innerHTML += `<p>${novel}</p><p>${denden}</p><p>${html}</p><hr>`
 
 
 });
