@@ -1,4 +1,5 @@
 window.addEventListener('load', (event) => {
+    /*
     let input = '|青空《あおぞら》ですなぁ。';
     let output = input.replace(/\|([^\\n]{1,}?)《([^\\n]{1,}?)》/g, (match, rb, rt)=>{ // Long
         return `|${rb}《${rt}》`;
@@ -9,12 +10,12 @@ window.addEventListener('load', (event) => {
         return `|${rb}《${rt}》`;
     });
     console.log(output);
-
+    */
 
     // ｛｝→<ruby>
-    let parser = new Parser([RubyParseSetFactory.RootHtml]);
-    text = '私｛わたし｝は漢字｛かんじ｝をHTML｛ハイパー テキスト マークアップ ランゲージ｝に変換｛へんかん｝します。ＨＴＭＬ｛Hyper Text Markup Language｝。字種を問わずルビを振りたいなら縦線（パイプライン）を使う。次のように。｜おとぎ話｛フェアリーストーリー｝。';
-    let html = parser.parse(text);
+    let rh = new Parser([RubyParseSetFactory.RootHtml]);
+    text = 'ルート書式。ここから小説共通書式に変換し、HTMLに変換できる。私｛わたし｝は漢字｛かんじ｝をHTML｛ハイパー テキスト マークアップ ランゲージ｝に変換｛へんかん｝します。ＨＴＭＬ｛Hyper Text Markup Language｝。字種を問わずルビを振りたいなら縦線（パイプライン）を使う。次のように。｜おとぎ話｛フェアリーストーリー｝。';
+    let html = rh.parse(text);
     console.log(text)
     console.log(html)
     document.body.innerHTML += `<p>${text}</p><p>${html}</p>`
@@ -26,8 +27,8 @@ window.addEventListener('load', (event) => {
     document.body.innerHTML += `<p>${novel}</p>`
 
     // ｜《》→<ruby>
-    parser = new Parser([RubyParseSetFactory.NovelHtml]);
-    html = parser.parse(novel);
+    const nh = new Parser([RubyParseSetFactory.NovelHtml]);
+    html = nh.parse(novel);
     console.log(html)
     document.body.innerHTML += `<p>${html}</p><hr>`
 
@@ -36,31 +37,36 @@ window.addEventListener('load', (event) => {
     parser = new Parser(RubyParseSetFactory.AozoraNovel);
     text = '青空文庫《あおぞらぶんこ》の書式。｜AOZORA《あおぞら》。'
     novel = parser.parse(text)
-    document.body.innerHTML += `<p>${text}</p><p>${novel}</p><hr>`
+    html = nh.parse(novel)
+    document.body.innerHTML += `<p>${text}</p><p>${novel}</p><p>${html}</p><hr>`
 
     // カクヨム→｜《》
-    parser = new Parser([RubyParseSetFactory.KakuyomuNovel]);
+    parser = new Parser(RubyParseSetFactory.KakuyomuNovel);
     text = 'カクヨム《かくよむ》の書式。｜KAKU-YOMU《カクヨム》。'
     novel = parser.parse(text)
-    document.body.innerHTML += `<p>${text}</p><p>${novel}</p><hr>`
+    html = nh.parse(novel)
+    document.body.innerHTML += `<p>${text}</p><p>${novel}</p><p>${html}</p><hr>`
 
     // 小説家になろう→｜《》
     parser = new Parser([RubyParseSetFactory.NarouNovel]);
-    text = '小説家になろうの書式。山田（やまだ）｜おとぎ話《フェアリーストーリー》。'
+    text = '小説家になろうの書式。山田（やまだ）。｜おとぎ話《フェアリーストーリー》。'
     novel = parser.parse(text)
-    document.body.innerHTML += `<p>${text}</p><p>${novel}</p><hr>`
+    html = nh.parse(novel)
+    document.body.innerHTML += `<p>${text}</p><p>${novel}</p><p>${html}</p><hr>`
 
     // ハーメルン→｜《》
     parser = new Parser([RubyParseSetFactory.HamelnNovel]);
     text = 'ハーメルンの書式。|山田《やまだ》。|おとぎ話《フェアリーストーリー》。'
     novel = parser.parse(text)
-    document.body.innerHTML += `<p>${text}</p><p>${novel}</p><hr>`
+    html = nh.parse(novel)
+    document.body.innerHTML += `<p>${text}</p><p>${novel}</p><p>${html}</p><hr>`
 
     // アルファポリス→｜《》
     parser = new Parser([RubyParseSetFactory.AlphaPoliceNovel]);
     text = 'アルファポリスの書式。#宇宙__そら__#が光って。'
     novel = parser.parse(text)
-    document.body.innerHTML += `<p>${text}</p><p>${novel}</p>`
+    html = nh.parse(novel)
+    document.body.innerHTML += `<p>${text}</p><p>${novel}</p><p>${html}</p>`
     // ｜《》→アルファポリス
     parser = new Parser([RubyParseSetFactory.NovelAlphaPolice]);
     text = parser.parse(novel)
@@ -70,7 +76,8 @@ window.addEventListener('load', (event) => {
     parser = new Parser([RubyParseSetFactory.DendenNovel]);
     let denden = 'でんでんマークダウン書式から小説形式に変換する。{漢字|かんじ}。'
     novel = parser.parse(denden)
-    document.body.innerHTML += `<p>${denden}</p><p>${novel}</p><hr>`
+    html = nh.parse(novel)
+    document.body.innerHTML += `<p>${denden}</p><p>${novel}</p><p>${html}</p><hr>`
 
     // ｜《》→でんでんマークダウン
     parser = new Parser([RubyParseSetFactory.NovelDenden]);

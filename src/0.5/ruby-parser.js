@@ -17,6 +17,7 @@ class ParseSet {
     }
     parse(text) {
         let parsed = text;
+        console.log(this._input.RegExps)
         for (const regexp of this._input.RegExps) {
             parsed = this._output.parse(parsed, regexp)
         }
@@ -75,8 +76,23 @@ class RubyNovelInput extends ParseInput {
         super();
         this._long = (long) ? new RubyLongNovelInput(long) : null;
         this._short = (short) ? new RubyShortNovelInput(short) : null;
-        if (this._long) { super.RegExps.push(this._long.RegExp); }
-        if (this._short) { super.RegExps.push(this._short.RegExp); }
+        /*
+        if (this._long) { super.RegExps.concat(this._long.RegExps); }
+        if (this._short) { super.RegExps.concat(this._short.RegExps); }
+        if (this._long) { this.RegExps.concat(this._long.RegExps); }
+        if (this._short) { this.RegExps.concat(this._short.RegExps); }
+        */
+        for (const input of [this._long, this._short]) {
+            if (input) { for (const regexp of input.RegExps) { this.RegExps.push(regexp); } }
+        }
+        /*
+        console.log(this._long.RegExps)
+//        console.log(this._short.RegExps)
+        console.log(super.RegExps)
+        console.log(this.RegExps)
+//        if (this._long) { super.RegExps.push(this._long.RegExp); }
+//        if (this._short) { super.RegExps.push(this._short.RegExp); }
+        */
     }
     get RegExps() { return super.RegExps; }
 }
@@ -100,6 +116,7 @@ class RubyHamelnInput extends RubyNovelInput {
     constructor() {super(null, {begin:'|', encBegin:'《', encEnd:'》'})}
     get RegExps() { return super.RegExps; }
 }
+/*
 class RubyOptionalInput {
     static #DEFAULT_OPTIONS = {
         begin: '|｜',
@@ -118,7 +135,7 @@ class RubyOptionalInput {
     get Options() { return this._options; }
     get RegExps() { return this._regexps; }
 }
-/*
+*/
 class RubyOptionalInput extends ParseInput {
     static #DEFAULT_OPTIONS = {
         begin: '|｜',
@@ -138,13 +155,14 @@ class RubyOptionalInput extends ParseInput {
     get Options() { return this._options; }
     get RegExps() { return super.RegExps; }
 }
+/*
 */
 /*
 class RubyOptionalInput {
     static #DEFAULT_OPTIONS = {
         begin: '|｜',
         rb: '^\n',
-        rt: '^\n',
+       rt: '^\n',
         rbLen: 20,
         rtLen: 50,
         encBegin: '(（《{｛',
@@ -171,13 +189,15 @@ class Chars {
     static #KANJI = '\\u2e80-\\u2fdf\\u3005\\u3007\\u303b\\u4e00-\\u9faf\\u3400-\\u4dbf\\uf900-\\ufaff';
     static #ALPHABET = 'A-Za-zＡ-Ｚａ-ｚ';
     static #NUMBER = '0-9０-９'
-    static #WIDE_SIMBOL = '\\u3000-\\u3040\\u3097-\\u30A0\\u30FB-\\u30FF'
+    static #WIDE_SYMBOL = '\\u3000-\\u3040\\u3097-\\u30A0\\u30FB-\\u30FF'
     static #HIRAGANA = '\\u3041-\\u3096'
     static #KATAKANA = '\\u30A1-\\u30FA'
+    static #HALF_SYMBOL = '!-/:-@¥[-`{-~';
     static get KANJI() { return Chars.#KANJI; }
     static get ALPHABET () { return Chars.#ALPHABET ; }
     static get NUMBER () { return Chars.#NUMBER ; }
-    static get WIDE_SIMBOL () { return Chars.#WIDE_SIMBOL ; }
+    static get WIDE_SYMBOL () { return Chars.#WIDE_SYMBOL ; }
+    static get HALF_SYMBOL () { return Chars.#HALF_SYMBOL ; }
     static get HIRAGANA () { return Chars.#HIRAGANA ; }
     static get KATAKANA () { return Chars.#KATAKANA ; }
 }
@@ -213,10 +233,13 @@ class RubyParseSetFactory {
     static #RootNovel = new ParseSet(new RubyRootInput(), new RubyLongNovelOutput());         // ｛｝→｜《》
     static #NovelHtml = new ParseSet(new RubyNovelInput(), new RubyHtmlOutput());             // ｜《》→<ruby>
 
+    // 青空文庫→｜｛｝
     //static #AozoraNovel = new ParseSet(new RubyAozoraInput(), new RubyLongNovelOutput());     // 青空文庫→｜｛｝
-    static #AozoraNovel = [new ParseSet(new RubyLongNovelInput(), new RubyLongNovelOutput()),
-                           new ParseSet(new RubyShortNovelInput(), new RubyShortNovelOutput())];    // 青空文庫→｜｛｝
-    static #KakuyomuNovel = new ParseSet(new RubyKakuyomuInput(), new RubyLongNovelOutput()); // カクヨム→｜《》
+    static #AozoraNovel = [new ParseSet(new RubyLongNovelInput({encBegin:'《', encEnd:'》'}), new RubyLongNovelOutput()),
+                           new ParseSet(new RubyShortNovelInput({encBegin:'《', encEnd:'》'}), new RubyShortNovelOutput())];
+    // カクヨム→｜《》
+    static #KakuyomuNovel = [new ParseSet(new RubyLongNovelInput({encBegin:'《', encEnd:'》'}), new RubyLongNovelOutput()),
+                             new ParseSet(new RubyShortNovelInput({encBegin:'《', encEnd:'》'}), new RubyShortNovelOutput())];
     static #NarouNovel = new ParseSet(new RubyNarouInput(), new RubyLongNovelOutput());       // なろう→｜《》
     static #HamelnNovel = new ParseSet(new RubyHamelnInput(), new RubyLongNovelOutput());     // ハーメルン→｜《》
     static #AlphaPoliceNovel = new ParseSet(new RubyAlphaPoliceInput(), new RubyLongNovelOutput()); // アルファポリス→｜《》
